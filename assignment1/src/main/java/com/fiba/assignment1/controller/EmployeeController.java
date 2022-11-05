@@ -4,7 +4,6 @@ import com.fiba.assignment1.entity.Employee;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
@@ -24,7 +23,7 @@ public class EmployeeController {
         RestTemplate restTemplate = new RestTemplate();
         Employee employee = restTemplate.getForObject(url, Employee.class);
         System.out.println("Employee: " + employee);
-        return "Employee get method applied successfully: " + "ID: " + employee.getId() + " Employee name: " + employee.getEmployeeName() + " Employee monthly salary: " + employee.getMonthlySalary();
+        return "Employee get method applied successfully: " + "ID: " + employee.getEmployeeId() + " Employee name: " + employee.getEmployeeName() + " Employee monthly salary: " + employee.getMonthlySalary();
     }
 
     @GetMapping("/employee/post")
@@ -35,7 +34,7 @@ public class EmployeeController {
         Employee employee = new Employee(1L, "Tevfik Kadan", 1000);
         Employee createdEmployee = restTemplate.postForObject(url, employee, Employee.class);
         System.out.println("Employee created: " + createdEmployee);
-        return "Employee post method applied successfully: " + "ID: " + employee.getId() + " Employee name: " + employee.getEmployeeName() + " Employee monthly salary: " + employee.getMonthlySalary();
+        return "Employee post method applied successfully: " + "ID: " + employee.getEmployeeId() + " Employee name: " + employee.getEmployeeName() + " Employee monthly salary: " + employee.getMonthlySalary();
     }
 
     @GetMapping("/employee/put")
@@ -46,7 +45,7 @@ public class EmployeeController {
         Employee employee = new Employee(2L, "Dilek Kadan", 1500);
         restTemplate.exchange(url, HttpMethod.PUT, new HttpEntity<Employee>(employee), Void.class);
         System.out.println("Employee updated: " + employee);
-        return "Employee put method applied successfully: " + "ID: " + employee.getId() + " Employee name: " + employee.getEmployeeName() + " Employee monthly salary: " + employee.getMonthlySalary();
+        return "Employee put method applied successfully: " + "ID: " + employee.getEmployeeId() + " Employee name: " + employee.getEmployeeName() + " Employee monthly salary: " + employee.getMonthlySalary();
     }
 
     @GetMapping("/employee/delete")

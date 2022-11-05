@@ -6,25 +6,25 @@ package com.fiba.assignment1.entity;
  */
 public class Employee {
 
-    private Long id;
+    private Long employeeId;
     private String employeeName;
     private double monthlySalary;
 
     public Employee() {
     }
 
-    public Employee(Long id, String employeeName, double monthlySalary) {
-        this.id = id;
+    public Employee(Long employeeId, String employeeName, double monthlySalary) {
+        this.employeeId = employeeId;
         this.employeeName = employeeName;
         this.monthlySalary = monthlySalary;
     }
 
-    public Long getId() {
-        return id;
+    public Long getEmployeeId() {
+        return employeeId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setEmployeeId(Long employeeId) {
+        this.employeeId = employeeId;
     }
 
     public String getEmployeeName() {

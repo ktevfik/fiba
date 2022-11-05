@@ -38,14 +38,14 @@ public class EmployeeResource {
 
     @PostMapping("/employee")
     public Employee createEmployee(@RequestBody Employee employee) {
-        employee.setId(300L);
-        System.out.println("Employee created: " + employee.getId() + " " + employee.getEmployeeName() + " " + employee.getMonthlySalary());
+        employee.setEmployeeId(300L);
+        System.out.println("Employee created: " + employee.getEmployeeId() + " " + employee.getEmployeeName() + " " + employee.getMonthlySalary());
         return employee;
     }
 
     @PutMapping("/employee")
     public void updateEmployee(@RequestBody Employee employee) {
-        System.out.println("Employee updated: " + employee.getId() + " " + employee.getEmployeeName() + " " + employee.getMonthlySalary());
+        System.out.println("Employee updated: " + employee.getEmployeeId() + " " + employee.getEmployeeName() + " " + employee.getMonthlySalary());
     }
 
     @DeleteMapping("/employee/{id}")
