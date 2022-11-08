@@ -10,7 +10,7 @@ import java.util.List;
  * @created 08/11/2022 - 03:26
  */
 public interface ProductService {
-    List<ProductDto> getProducts();
+    List<ProductDto> getAllProducts();
 
     ProductDto getProductById(Long id);
 

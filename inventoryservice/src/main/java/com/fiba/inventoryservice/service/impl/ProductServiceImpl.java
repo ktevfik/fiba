@@ -27,7 +27,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductDto> getProducts() {
+    public List<ProductDto> getAllProducts() {
         List<Product> products = productEntityService.findAll();
 
         List<ProductDto> productDtoList = ProductMapper.INSTANCE.convertToProductDtoList(products);
