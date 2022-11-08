@@ -56,9 +56,6 @@ public class CategoryEntityService {
     }
 
     public boolean isCategoryExist(Long id, String name) {
-        if (categoryRepository.isCategoryExist(id, name).isPresent()) {
-            return true;
-        }
-        return false;
+        return categoryRepository.isCategoryExist(id, name).isPresent();
     }
 }

@@ -7,7 +7,6 @@ import com.fiba.inventoryservice.dto.product.ProductDto;
 import com.fiba.inventoryservice.dto.product.ProductSaveRequestDto;
 import com.fiba.inventoryservice.entity.Category;
 import com.fiba.inventoryservice.entity.Product;
-import com.fiba.inventoryservice.repository.ProductRepository;
 import com.fiba.inventoryservice.service.ProductService;
 import com.fiba.inventoryservice.service.entityservice.ProductEntityService;
 import org.springframework.stereotype.Service;

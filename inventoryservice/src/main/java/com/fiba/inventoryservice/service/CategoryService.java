@@ -2,7 +2,6 @@ package com.fiba.inventoryservice.service;
 
 import com.fiba.inventoryservice.dto.category.CategoryDto;
 import com.fiba.inventoryservice.dto.category.CategorySaveRequestDto;
-import com.fiba.inventoryservice.entity.Category;
 
 import java.util.List;
 

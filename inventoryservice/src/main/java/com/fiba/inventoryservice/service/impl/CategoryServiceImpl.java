@@ -6,7 +6,6 @@ import com.fiba.inventoryservice.dto.category.CategorySaveRequestDto;
 import com.fiba.inventoryservice.entity.Category;
 import com.fiba.inventoryservice.enums.ErrorMessage;
 import com.fiba.inventoryservice.exception.exceptions.CategoryNotFoundException;
-import com.fiba.inventoryservice.repository.CategoryRepository;
 import com.fiba.inventoryservice.service.CategoryService;
 import com.fiba.inventoryservice.service.entityservice.CategoryEntityService;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,5 @@
 package com.fiba.inventoryservice.service.entityservice;
 
-import com.fiba.inventoryservice.converter.CategoryMapper;
-import com.fiba.inventoryservice.converter.ProductMapper;
 import com.fiba.inventoryservice.dto.category.CategoryDto;
 import com.fiba.inventoryservice.dto.product.ProductDto;
 import com.fiba.inventoryservice.entity.Category;
@@ -85,4 +83,5 @@ public class ProductEntityService {
     public void delete(Product product) {
         productRepository.delete(product);
     }
+
 }

@@ -11,7 +11,7 @@ public enum ErrorMessage {
 
     PRODUCT_ALREADY_EXIST("Product already exist");
 
-    private String message;
+    private final String message;
 
     ErrorMessage(String message) {
         this.message = message;

@@ -2,6 +2,8 @@ package com.fiba.inventoryservice.exception;
 
 import com.fiba.inventoryservice.exception.exceptions.CategoryAlreadyExistException;
 import com.fiba.inventoryservice.exception.exceptions.CategoryNotFoundException;
+import com.fiba.inventoryservice.exception.exceptions.ProductAlreadyExistException;
+import com.fiba.inventoryservice.exception.exceptions.ProductNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -36,6 +38,20 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
     @ExceptionHandler(CategoryAlreadyExistException.class)
     public final ResponseEntity<Object> handleCategoryAlreadyExistExceptions(CategoryAlreadyExistException ex, WebRequest request) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
+                request.getDescription(false));
+        return new ResponseEntity(exceptionResponse, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(ProductNotFoundException.class)
+    public final ResponseEntity<Object> handleProductNotFoundExceptions(ProductNotFoundException ex, WebRequest request) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
+                request.getDescription(false));
+        return new ResponseEntity(exceptionResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ProductAlreadyExistException.class)
+    public final ResponseEntity<Object> handleProductAlreadyExistExceptions(ProductAlreadyExistException ex, WebRequest request) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
                 request.getDescription(false));
         return new ResponseEntity(exceptionResponse, HttpStatus.CONFLICT);

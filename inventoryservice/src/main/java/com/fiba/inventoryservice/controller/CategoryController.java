@@ -49,6 +49,7 @@ public class CategoryController {
     @PostMapping
     public ResponseEntity<?> addCategory(@RequestBody CategorySaveRequestDto categorySaveRequestDto) {
         CategoryDto savedCategory = categoryService.addCategory(categorySaveRequestDto);
+
         return new ResponseEntity<>(savedCategory, HttpStatus.CREATED);
     }
 
@@ -62,6 +63,7 @@ public class CategoryController {
     @PutMapping
     public ResponseEntity<?> updateCategory(@RequestBody CategoryDto categoryDto) {
         CategoryDto updatedCategory = categoryService.updateCategory(categoryDto);
+
         return new ResponseEntity<>(updatedCategory, HttpStatus.OK);
     }
 }
