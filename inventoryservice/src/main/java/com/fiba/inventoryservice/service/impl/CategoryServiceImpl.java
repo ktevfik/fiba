@@ -63,7 +63,11 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDto updateCategory(CategoryDto categoryDto) {
-        controlIsCategoryExist(categoryDto);
+        boolean isCategoryExist = categoryEntityService.isCategoryExist(categoryDto.getCategoryId(), categoryDto.getCategoryName());
+
+        if (!isCategoryExist) {
+            throw new CategoryNotFoundException(ErrorMessage.CATEGORY_NOT_FOUND);
+        }
 
         Category category = CategoryMapper.INSTANCE.convertToCategory(categoryDto);
 
@@ -72,15 +76,5 @@ public class CategoryServiceImpl implements CategoryService {
         CategoryDto updatedCategoryDto = CategoryMapper.INSTANCE.convertToCategoryDto(updatedCategory);
 
         return updatedCategoryDto;
-    }
-
-    private void controlIsCategoryExist(CategoryDto categoryDto) {
-        Long id = categoryDto.getCategoryId();
-
-        boolean isExist = categoryEntityService.existById(id);
-
-        if (!isExist) {
-            throw new CategoryNotFoundException(ErrorMessage.CATEGORY_NOT_FOUND);
-        }
     }
 }
