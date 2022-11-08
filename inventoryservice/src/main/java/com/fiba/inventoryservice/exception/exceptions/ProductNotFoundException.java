@@ -6,13 +6,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * @author Tevfik Kadan
- * @created 08/11/2022 - 04:10
+ * @created 08/11/2022 - 23:31
  */
 @ResponseStatus(HttpStatus.NOT_FOUND)
-public class CategoryNotFoundException extends RuntimeException {
-
-    public CategoryNotFoundException(ErrorMessage message) {
+public class ProductNotFoundException extends RuntimeException {
+    public ProductNotFoundException(ErrorMessage message) {
         super(message.getMessage());
     }
-
 }

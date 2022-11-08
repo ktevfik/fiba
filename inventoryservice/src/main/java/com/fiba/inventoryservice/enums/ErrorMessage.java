@@ -6,7 +6,10 @@ package com.fiba.inventoryservice.enums;
  */
 public enum ErrorMessage {
     CATEGORY_NOT_FOUND("Category not found"),
-    CATEGORY_ALREADY_EXIST("Category already exist");
+    CATEGORY_ALREADY_EXIST("Category already exist"),
+    PRODUCT_NOT_FOUND("Product not found"),
+
+    PRODUCT_ALREADY_EXIST("Product already exist");
 
     private String message;
 
