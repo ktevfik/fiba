@@ -1,12 +1,11 @@
 package com.fiba.inventoryservice.service.impl;
 
-import com.fiba.inventoryservice.converter.CategoryMapper;
-import com.fiba.inventoryservice.converter.ProductMapper;
-import com.fiba.inventoryservice.dto.category.CategoryDto;
+import com.fiba.inventoryservice.converter.product.ProductMapper;
 import com.fiba.inventoryservice.dto.product.ProductDto;
 import com.fiba.inventoryservice.dto.product.ProductSaveRequestDto;
-import com.fiba.inventoryservice.entity.Category;
 import com.fiba.inventoryservice.entity.Product;
+import com.fiba.inventoryservice.enums.ErrorMessage;
+import com.fiba.inventoryservice.exception.exceptions.ProductNotFoundException;
 import com.fiba.inventoryservice.service.ProductService;
 import com.fiba.inventoryservice.service.entityservice.ProductEntityService;
 import org.springframework.stereotype.Service;
@@ -59,21 +58,17 @@ public class ProductServiceImpl implements ProductService {
 
         Product savedProduct = productEntityService.save(productDto);
 
-        Category category = savedProduct.getCategory();
-
-        CategoryDto categoryDto = CategoryMapper.INSTANCE.convertToCategoryDto(category);
-
         ProductDto responseProductDto = ProductMapper.INSTANCE.convertToProductDto(savedProduct);
-
-        responseProductDto.setCategoryDto(categoryDto);
 
         return responseProductDto;
     }
 
     @Override
     public void deleteProduct(Long id) {
-        Product product = productEntityService.getByIdWithControl(id);
+        if (!productEntityService.existById(id)) {
+            throw new ProductNotFoundException(ErrorMessage.PRODUCT_NOT_FOUND);
+        }
 
-        productEntityService.delete(product);
+        productEntityService.delete(id);
     }
 }

@@ -1,9 +1,8 @@
-package com.fiba.inventoryservice.converter;
+package com.fiba.inventoryservice.converter.category;
 
 import com.fiba.inventoryservice.dto.category.CategoryDto;
 import com.fiba.inventoryservice.dto.category.CategorySaveRequestDto;
 import com.fiba.inventoryservice.entity.Category;
-import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
@@ -12,7 +11,6 @@ import java.util.List;
  * @author Tevfik Kadan
  * @created 08/11/2022 - 03:55
  */
-@Mapper
 public interface CategoryMapper {
     CategoryMapper INSTANCE = Mappers.getMapper(CategoryMapper.class);
 

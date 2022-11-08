@@ -79,9 +79,13 @@ public class ProductEntityService {
         return productRepository.save(product);
     }
 
+    public boolean existById(Long id) {
+        return productRepository.existsById(id);
+    }
 
-    public void delete(Product product) {
-        productRepository.delete(product);
+
+    public void delete(Long id) {
+        productRepository.deleteProductById(id);
     }
 
 }

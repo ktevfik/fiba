@@ -1,6 +1,6 @@
 package com.fiba.inventoryservice.service.impl;
 
-import com.fiba.inventoryservice.converter.CategoryMapper;
+import com.fiba.inventoryservice.converter.category.CategoryMapper;
 import com.fiba.inventoryservice.dto.category.CategoryDto;
 import com.fiba.inventoryservice.dto.category.CategorySaveRequestDto;
 import com.fiba.inventoryservice.entity.Category;
