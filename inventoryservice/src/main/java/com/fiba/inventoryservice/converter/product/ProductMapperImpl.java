@@ -28,8 +28,8 @@ public class ProductMapperImpl implements ProductMapper {
             List<ProductDto> list = new ArrayList(productList.size());
             Iterator var3 = productList.iterator();
 
-            while(var3.hasNext()) {
-                Product product = (Product)var3.next();
+            while (var3.hasNext()) {
+                Product product = (Product) var3.next();
                 list.add(this.convertToProductDto(product));
             }
 

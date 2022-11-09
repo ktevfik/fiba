@@ -25,14 +25,15 @@ public class CategoryMapperImpl implements CategoryMapper {
             List<CategoryDto> list = new ArrayList(categoryList.size());
             Iterator var3 = categoryList.iterator();
 
-            while(var3.hasNext()) {
-                Category category = (Category)var3.next();
+            while (var3.hasNext()) {
+                Category category = (Category) var3.next();
                 list.add(this.convertToCategoryDto(category));
             }
 
             return list;
         }
     }
+
     @Override
 
     public CategoryDto convertToCategoryDto(Category category) {
