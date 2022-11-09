@@ -5,11 +5,13 @@ package com.fiba.inventoryservice.enums;
  * @created 08/11/2022 - 04:11
  */
 public enum ErrorMessage {
-    CATEGORY_NOT_FOUND("Category not found"),
-    CATEGORY_ALREADY_EXIST("Category already exist"),
-    PRODUCT_NOT_FOUND("Product not found"),
 
-    PRODUCT_ALREADY_EXIST("Product already exist");
+    SOMETHING_WENT_WRONG("SOMETHING_WENT_WRONG"),
+    CATEGORY_NOT_FOUND("CATEGORY_NOT_FOUND"),
+    CATEGORY_ALREADY_EXIST("CATEGORY_ALREADY_EXIST"),
+    PRODUCT_NOT_FOUND("PRODUCT_NOT_FOUND"),
+
+    PRODUCT_ALREADY_EXIST("PRODUCT_ALREADY_EXIST");
 
     private final String message;
 

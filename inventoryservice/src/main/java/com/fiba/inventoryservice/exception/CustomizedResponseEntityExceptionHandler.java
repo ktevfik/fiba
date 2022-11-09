@@ -1,5 +1,6 @@
 package com.fiba.inventoryservice.exception;
 
+import com.fiba.inventoryservice.enums.ErrorMessage;
 import com.fiba.inventoryservice.exception.exceptions.CategoryAlreadyExistException;
 import com.fiba.inventoryservice.exception.exceptions.CategoryNotFoundException;
 import com.fiba.inventoryservice.exception.exceptions.ProductAlreadyExistException;
@@ -24,7 +25,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
-        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
+        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ErrorMessage.SOMETHING_WENT_WRONG.getMessage(),
                 request.getDescription(false));
         return new ResponseEntity(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
