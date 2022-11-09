@@ -12,7 +12,6 @@ import java.util.List;
  * @author Tevfik Kadan
  * @created 09/11/2022 - 02:26
  */
-
 public class CategoryMapperImpl implements CategoryMapper {
     public CategoryMapperImpl() {
     }
