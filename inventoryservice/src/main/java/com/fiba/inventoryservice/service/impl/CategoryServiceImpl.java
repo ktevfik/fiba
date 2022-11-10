@@ -69,9 +69,11 @@ public class CategoryServiceImpl implements CategoryService {
             throw new CategoryNotFoundException(ErrorMessage.CATEGORY_NOT_FOUND);
         }
 
-        Category category = CategoryMapper.INSTANCE.convertToCategory(categorySaveRequestDto);
+        Category category = new Category();
+        category.setCategoryId(id);
+        category.setCategoryName(categorySaveRequestDto.getCategoryName());
 
-        Category updatedCategory = categoryEntityService.save(category);
+        Category updatedCategory = categoryEntityService.update(category);
 
         CategoryDto updatedCategoryDto = CategoryMapper.INSTANCE.convertToCategoryDto(updatedCategory);
 

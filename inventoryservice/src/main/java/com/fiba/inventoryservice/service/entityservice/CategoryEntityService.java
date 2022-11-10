@@ -52,12 +52,24 @@ public class CategoryEntityService {
     public Category save(Category category) {
         log.info("Save process started for category: {}", category.getCategoryName());
         try {
+
             return categoryRepository.save(category);
         } catch (Exception e) {
             log.error(ErrorMessage.CATEGORY_ALREADY_EXIST_MESSAGE.getMessage());
             throw new CategoryAlreadyExistException(ErrorMessage.CATEGORY_ALREADY_EXIST);
         }
 
+    }
+
+    public Category update(Category category) {
+        log.info("Update process started for category: {}", category.getCategoryName());
+        try {
+            categoryRepository.updateCategoryName(category.getCategoryId(), category.getCategoryName());
+        } catch (Exception e) {
+            log.error(ErrorMessage.CATEGORY_NOT_FOUND.getMessage());
+            throw new CategoryNotFoundException(ErrorMessage.CATEGORY_NOT_FOUND);
+        }
+        return category;
     }
 
     public void delete(Category category) {
