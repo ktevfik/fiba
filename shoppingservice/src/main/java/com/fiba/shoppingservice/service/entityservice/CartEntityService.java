@@ -161,4 +161,15 @@ public class CartEntityService {
         return cart.isPresent();
     }
 
+    public List<CartProductDto> getCartProductsByCartId(long cartId) {
+        log.info("Get cart products by cart id process started");
+        Cart cart = getCartById(cartId);
+        List<CartProduct> cartProducts = cart.getCartProducts();
+
+        List<CartProductDto> cartProductDtos = CartProductMapper.INSTANCE.convertToCartProductDtoList(cartProducts);
+        log.info("Cart products found successfully: {}", cartProductDtos);
+
+        log.info("Get cart products by cart id process finished");
+        return cartProductDtos;
+    }
 }

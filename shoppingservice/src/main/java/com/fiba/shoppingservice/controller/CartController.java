@@ -59,6 +59,13 @@ public class CartController {
         return new ResponseEntity<>(cartProductDto, HttpStatus.OK);
     }
 
+    @GetMapping("/carts/{cartId}/products")
+    public ResponseEntity<?> getCartProductsByCartId(@PathVariable long cartId) {
+        List<CartProductDto> cartProductDtos = cartService.getCartProductsByCartId(cartId);
+
+        return new ResponseEntity<>(cartProductDtos, HttpStatus.OK);
+    }
+
     @PostMapping("/carts/add")
     public ResponseEntity<?> addProductToCart(@RequestBody SaveProductToCartDto saveProductToCartDto) {
         CartDto cartDto = cartService.addProductToCart(saveProductToCartDto);

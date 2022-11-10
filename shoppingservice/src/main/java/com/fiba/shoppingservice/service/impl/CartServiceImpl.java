@@ -130,4 +130,9 @@ public class CartServiceImpl implements CartService {
     public CartProductDto getCartProductById(long cartProductId) {
         return cartEntityService.getCartProductById(cartProductId);
     }
+
+    @Override
+    public List<CartProductDto> getCartProductsByCartId(long cartId) {
+        return cartEntityService.getCartProductsByCartId(cartId);
+    }
 }

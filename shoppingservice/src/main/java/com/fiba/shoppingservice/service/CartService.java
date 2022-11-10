@@ -28,4 +28,6 @@ public interface CartService {
     CartDto checkoutCart(long cartId);
 
     CartProductDto getCartProductById(long cartProductId);
+
+    List<CartProductDto> getCartProductsByCartId(long cartId);
 }
