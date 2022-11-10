@@ -1,8 +1,11 @@
 package com.fiba.ecommerce.exception;
 
 import com.fiba.ecommerce.enums.ErrorMessage;
+import com.fiba.ecommerce.exception.exceptions.CartNotFoundException;
+import com.fiba.ecommerce.exception.exceptions.CartProductNotFoundException;
 import com.fiba.ecommerce.exception.exceptions.CategoryAlreadyExistException;
 import com.fiba.ecommerce.exception.exceptions.CategoryNotFoundException;
+import com.fiba.ecommerce.exception.exceptions.CustomerAlreadyExistException;
 import com.fiba.ecommerce.exception.exceptions.ProductAlreadyExistException;
 import com.fiba.ecommerce.exception.exceptions.ProductNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -47,6 +50,24 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
     @ExceptionHandler(ProductAlreadyExistException.class)
     public final ResponseEntity<Object> handleProductAlreadyExistExceptions(ProductAlreadyExistException ex, WebRequest request) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(ex.getMessage(), ErrorMessage.PRODUCT_ALREADY_EXIST_MESSAGE.getMessage());
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(CartNotFoundException.class)
+    public final ResponseEntity<Object> handleCartNotFoundException(CartNotFoundException ex, WebRequest request) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(ex.getMessage(), ErrorMessage.PRODUCT_ALREADY_EXIST_MESSAGE.getMessage());
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(CartProductNotFoundException.class)
+    public final ResponseEntity<Object> handleCartProductNotFoundException(CartProductNotFoundException ex, WebRequest request) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(ex.getMessage(), ErrorMessage.PRODUCT_ALREADY_EXIST_MESSAGE.getMessage());
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(CustomerAlreadyExistException.class)
+    public final ResponseEntity<Object> handleCustomerAlreadyExistException(CustomerAlreadyExistException ex, WebRequest request) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(ex.getMessage(), ErrorMessage.PRODUCT_ALREADY_EXIST_MESSAGE.getMessage());
         return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
     }

@@ -4,7 +4,6 @@ import com.fiba.ecommerce.models.SuccessMessage;
 import com.fiba.ecommerce.service.InventoryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -54,5 +53,36 @@ public class InventoryController {
     public ResponseEntity<?> updateCategory(@PathVariable("id") Long id) {
         inventoryService.updateCategory(id);
         return new ResponseEntity<>(new SuccessMessage(), null, 200);
+    }
+
+    @RequestMapping(value = "/products/get/all", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<?> getProducts() {
+        return new ResponseEntity<>(inventoryService.getProducts(), null, 200);
+    }
+
+    @RequestMapping(value = "/products/create", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<?> createProduct() {
+        return new ResponseEntity<>(inventoryService.createProduct(), null, 200);
+    }
+
+    @RequestMapping(value = "/products/delete/{id}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<?> deleteProduct(@PathVariable("id") Long id) {
+        inventoryService.deleteProduct(id);
+        return new ResponseEntity<>(new SuccessMessage(), null, 200);
+    }
+
+    @RequestMapping(value = "/products/get/{id}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<?> getProductById(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(inventoryService.getProductById(id), null, 200);
+    }
+
+    @RequestMapping(value = "/products/category/{id}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<?> getProductsByCategoryId(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(inventoryService.getProductsByCategoryId(id), null, 200);
     }
 }

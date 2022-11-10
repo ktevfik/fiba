@@ -2,12 +2,15 @@ package com.fiba.ecommerce.service;
 
 import com.fiba.ecommerce.enums.ErrorMessage;
 import com.fiba.ecommerce.exception.exceptions.CategoryNotFoundException;
+import com.fiba.ecommerce.exception.exceptions.ProductAlreadyExistException;
 import com.fiba.ecommerce.models.inventory.category.CategoryDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.fiba.ecommerce.models.inventory.product.ProductDto;
+import com.fiba.ecommerce.models.inventory.product.ProductSaveRequestDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 
@@ -75,7 +78,7 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     public void updateCategory(Long id) {
         try {
-            String url = "http://localhost:8081/api/inventory/categories";
+            String url = "http://localhost:8081/api/inventory/categories/" + id;
 
             RestTemplate restTemplate = new RestTemplate();
 
@@ -86,5 +89,75 @@ public class InventoryServiceImpl implements InventoryService {
         } catch (Exception e) {
             throw new CategoryNotFoundException(ErrorMessage.CATEGORY_NOT_FOUND);
         }
+    }
+
+    @Override
+    public List<ProductDto> getProducts() {
+        String url = "http://localhost:8081/api/inventory/products";
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        ResponseEntity<ProductDto[]> responseEntity = restTemplate.getForEntity(url, ProductDto[].class);
+
+        List<ProductDto> productDtoList = List.of(Objects.requireNonNull(responseEntity.getBody()));
+
+        return productDtoList;
+    }
+
+    @Override
+    public ProductDto createProduct() {
+        try {
+            String url = "http://localhost:8081/api/inventory/products";
+
+            RestTemplate restTemplate = new RestTemplate();
+
+            ProductSaveRequestDto productSaveRequestDto = new ProductSaveRequestDto();
+            productSaveRequestDto.setProductName("Test Product");
+            productSaveRequestDto.setSalesPrice(BigDecimal.valueOf(100));
+            productSaveRequestDto.setCategoryDto(getCategoryById(1053L));
+
+            ResponseEntity<ProductDto> responseEntity = restTemplate.postForEntity(url, productSaveRequestDto, ProductDto.class);
+
+            return responseEntity.getBody();
+        } catch (CategoryNotFoundException | ProductAlreadyExistException t) {
+            if (t instanceof CategoryNotFoundException) {
+                throw new CategoryNotFoundException(ErrorMessage.CATEGORY_NOT_FOUND);
+            } else {
+                throw new ProductAlreadyExistException(ErrorMessage.PRODUCT_ALREADY_EXIST);
+            }
+        }
+    }
+
+    @Override
+    public void deleteProduct(Long id) {
+        String url = "http://localhost:8081/api/inventory/products/" + id;
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        restTemplate.delete(url);
+    }
+
+    @Override
+    public ProductDto getProductById(Long id) {
+        String url = "http://localhost:8081/api/inventory/products/" + id;
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        ResponseEntity<ProductDto> responseEntity = restTemplate.getForEntity(url, ProductDto.class);
+
+        return responseEntity.getBody();
+    }
+
+    @Override
+    public List<ProductDto> getProductsByCategoryId(Long id) {
+        String url = "http://localhost:8081/api/inventory/products/category/" + id;
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        ResponseEntity<ProductDto[]> responseEntity = restTemplate.getForEntity(url, ProductDto[].class);
+
+        List<ProductDto> productDtoList = List.of(Objects.requireNonNull(responseEntity.getBody()));
+
+        return productDtoList;
     }
 }

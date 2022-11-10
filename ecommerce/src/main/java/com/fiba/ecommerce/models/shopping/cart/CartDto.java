@@ -1,6 +1,7 @@
 package com.fiba.ecommerce.models.shopping.cart;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fiba.ecommerce.models.shopping.cartproduct.CartProductDto;
 
 import java.math.BigDecimal;
 import java.util.List;

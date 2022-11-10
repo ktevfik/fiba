@@ -11,15 +11,16 @@ public class SuccessMessage {
     public SuccessMessage() {
 
     }
-    public SuccessMessage(String message) {
-        this.message = message;
-    }
 
-    public void setMessage(String message) {
+    public SuccessMessage(String message) {
         this.message = message;
     }
 
     public String getMessage() {
         return "SUCCESS";
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }
