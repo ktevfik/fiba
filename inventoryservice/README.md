@@ -15,7 +15,7 @@ Create 5 endpoint for Category Rest controller:
 - POST /api/inventory/categories. Create a new category
 - GET /api/inventory/categories. Get all categories
 - GET /api/inventory/categories/{categoryId}. Get a category by id
-- PUT /api/inventory/categories. Update a category
+- PUT /api/inventory/categories/{categoryId}. Update a category
 - DELETE /api/inventory/categories/{categoryId}. Delete a category by id.
 
 Create Product Entity with following fields:
