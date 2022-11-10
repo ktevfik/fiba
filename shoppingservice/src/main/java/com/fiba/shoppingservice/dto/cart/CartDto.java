@@ -1,7 +1,7 @@
 package com.fiba.shoppingservice.dto.cart;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fiba.shoppingservice.dto.inventory.ProductDto;
+import com.fiba.shoppingservice.dto.cartproduct.CartProductDto;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -18,8 +18,10 @@ public class CartDto {
 
     private BigDecimal totalAmount;
 
+    private boolean isPaid;
+
     @JsonProperty("cartProducts")
-    private List<ProductDto> cartProducts;
+    private List<CartProductDto> cartProducts;
 
     public CartDto() {
     }
@@ -30,11 +32,19 @@ public class CartDto {
         this.totalAmount = totalAmount;
     }
 
-    public CartDto(long cartId, String customerName, BigDecimal totalAmount, List<ProductDto> cartProducts) {
+    public CartDto(long cartId, String customerName, BigDecimal totalAmount, List<CartProductDto> cartProducts) {
         this.cartId = cartId;
         this.customerName = customerName;
         this.totalAmount = totalAmount;
         this.cartProducts = cartProducts;
+    }
+
+    public boolean isPaid() {
+        return isPaid;
+    }
+
+    public void setPaid(boolean paid) {
+        isPaid = paid;
     }
 
     public long getCartId() {
@@ -61,11 +71,11 @@ public class CartDto {
         this.totalAmount = totalAmount;
     }
 
-    public List<ProductDto> getCartProducts() {
+    public List<CartProductDto> getCartProducts() {
         return cartProducts;
     }
 
-    public void setCartProducts(List<ProductDto> cartProducts) {
+    public void setCartProducts(List<CartProductDto> cartProducts) {
         this.cartProducts = cartProducts;
     }
 }

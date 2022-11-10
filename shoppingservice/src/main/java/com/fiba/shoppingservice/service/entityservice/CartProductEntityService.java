@@ -1,7 +1,12 @@
 package com.fiba.shoppingservice.service.entityservice;
 
+import com.fiba.shoppingservice.entity.CartProduct;
+import com.fiba.shoppingservice.enums.ErrorMessage;
+import com.fiba.shoppingservice.exception.exceptions.CartProductNotFoundException;
 import com.fiba.shoppingservice.repository.CartProductRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 /**
  * @author Tevfik Kadan
@@ -14,5 +19,39 @@ public class CartProductEntityService {
 
     public CartProductEntityService(CartProductRepository cartProductRepository) {
         this.cartProductRepository = cartProductRepository;
+    }
+
+    public CartProduct findCartProductById(Long id) {
+        if (!existById(id)) {
+            throw new CartProductNotFoundException(ErrorMessage.CART_PRODUCT_NOT_FOUND);
+        }
+
+        CartProduct cartProduct = cartProductRepository.findById(id).get();
+
+        return cartProduct;
+    }
+
+    public boolean existById(Long id) {
+        return cartProductRepository.existsById(id);
+    }
+
+    public CartProduct saveCartProduct(CartProduct cartProduct) {
+        CartProduct savedCartProduct = cartProductRepository.save(cartProduct);
+
+        return savedCartProduct;
+    }
+
+    public CartProduct getCartProductByCartIdAndProductId(long cartId, long productId) {
+        Optional<CartProduct> cartProduct = cartProductRepository.findCartProductByCartIdAndProductId(cartId, productId);
+
+        if (!cartProduct.isPresent()) {
+            throw new CartProductNotFoundException(ErrorMessage.CART_PRODUCT_NOT_FOUND);
+        }
+
+        return cartProduct.get();
+    }
+
+    public void deleteCartProductById(Long cartProductId) {
+        cartProductRepository.deleteById(cartProductId);
     }
 }

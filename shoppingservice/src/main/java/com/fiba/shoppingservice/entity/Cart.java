@@ -27,7 +27,7 @@ public class Cart {
     @Column(name = "CART_ID")
     private Long cartId;
 
-    @Column(name = "CUSTOMER_NAME", length = 50, nullable = false)
+    @Column(name = "CUSTOMER_NAME", length = 50, unique = true, nullable = false)
     private String customerName;
 
     @Column(name = "TOTAL_AMOUNT", nullable = false)
