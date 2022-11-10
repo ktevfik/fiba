@@ -41,8 +41,8 @@ public class CartProductEntityService {
         return savedCartProduct;
     }
 
-    public CartProduct getCartProductByCartIdAndProductId(long cartId, long productId) {
-        Optional<CartProduct> cartProduct = cartProductRepository.findCartProductByCartIdAndProductId(cartId, productId);
+    public CartProduct getCartProductByCartIdAndCartProductId(long cartId, long cartProductId) {
+        Optional<CartProduct> cartProduct = cartProductRepository.findCartProductByCartIdAndCartProductId(cartId, cartProductId);
 
         if (!cartProduct.isPresent()) {
             throw new CartProductNotFoundException(ErrorMessage.CART_PRODUCT_NOT_FOUND);

@@ -5,11 +5,16 @@ import com.fiba.shoppingservice.dto.cart.CartDto;
 import com.fiba.shoppingservice.dto.cart.CartSaveRequestDto;
 import com.fiba.shoppingservice.dto.cart.SaveProductToCartDto;
 import com.fiba.shoppingservice.dto.cartproduct.CartProductDto;
+import com.fiba.shoppingservice.dto.inventory.ProductDto;
 import com.fiba.shoppingservice.entity.Cart;
+import com.fiba.shoppingservice.entity.CartProduct;
 import com.fiba.shoppingservice.service.CartService;
 import com.fiba.shoppingservice.service.entityservice.CartEntityService;
+import com.fiba.shoppingservice.service.entityservice.CartProductEntityService;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,15 +26,25 @@ public class CartServiceImpl implements CartService {
 
     private final CartEntityService cartEntityService;
 
-    public CartServiceImpl(CartEntityService cartEntityService) {
+    private final CartProductEntityService cartProductEntityService;
+
+    public CartServiceImpl(CartEntityService cartEntityService, CartProductEntityService cartProductEntityService) {
         this.cartEntityService = cartEntityService;
+        this.cartProductEntityService = cartProductEntityService;
     }
 
     @Override
     public CartDto createCart(CartSaveRequestDto cartSaveRequestDto) {
         CartDto cartDto = CartMapper.INSTANCE.convertToCartDto(cartSaveRequestDto);
 
-        CartDto savedCart = cartEntityService.saveCart(cartDto);
+        Cart cart = CartMapper.INSTANCE.convertToCart(cartDto);
+        // initialize savedCartDto with starter values
+        // totalAmount - cartProducts - isPaid
+        cart.setPaid(false);
+        cart.setTotalAmount(BigDecimal.ZERO);
+        cart.setCartProducts(new ArrayList<>());
+
+        CartDto savedCart = cartEntityService.saveCart(cart);
 
         return savedCart;
     }
@@ -59,19 +74,56 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public CartDto addProductToCart(SaveProductToCartDto saveProductToCartDto) {
-        CartDto cartDto = cartEntityService.addProductToCart(saveProductToCartDto);
+        Cart cart = cartEntityService.getCartById(saveProductToCartDto.getCartId());
+
+        if (cart.isPaid()) {
+            cart.setPaid(false);
+        }
+
+        Long productId = saveProductToCartDto.getProductId();
+
+        int quantity = saveProductToCartDto.getSalesQuantity();
+
+        ProductDto productDto = cartEntityService.getProductById(productId);
+
+        CartProduct cartProduct = new CartProduct();
+        cartProduct.setCart(cart);
+        cartProduct.setProductId(productDto.getProductId());
+        cartProduct.setSalesPrice(productDto.getSalesPrice());
+        cartProduct.setSalesQuantity(quantity);
+        cartProduct.setLineAmount(productDto.getSalesPrice().multiply(BigDecimal.valueOf(quantity)));
+
+        CartDto cartDto = cartEntityService.addProductToCart(cart, cartProduct);
 
         return cartDto;
     }
 
     @Override
-    public void removeProductFromCart(long cartId, long productId) {
-        cartEntityService.removeProductFromCart(cartId, productId);
+    public void removeProductFromCart(long cartId, long cartProductId) {
+        Cart cart = cartEntityService.getCartById(cartId);
+
+        CartProduct cartProduct = cartProductEntityService.getCartProductByCartIdAndCartProductId(cartId, cartProductId);
+
+        cart.getCartProducts().remove(cartProduct);
+
+        cart.setTotalAmount(cart.getTotalAmount().subtract(cartProduct.getLineAmount()));
+
+        cartEntityService.removeProductFromCart(cart, cartProduct);
     }
 
     @Override
     public CartDto checkoutCart(long cartId) {
-        return cartEntityService.removeAllCartProductsAndCheckoutCart(cartId);
+        Cart cart = cartEntityService.getCartById(cartId);
+
+        List<CartProduct> cartProducts = cart.getCartProducts();
+
+        cart.setCartProducts(new ArrayList<>());
+
+        cart.setTotalAmount(BigDecimal.ZERO);
+
+        cart.setPaid(true);
+
+        return cartEntityService.removeAllCartProductsAndCheckoutCart(cart, cartProducts);
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.fiba.shoppingservice.service.entityservice;
 import com.fiba.shoppingservice.converter.Cart.CartMapper;
 import com.fiba.shoppingservice.converter.CartProduct.CartProductMapper;
 import com.fiba.shoppingservice.dto.cart.CartDto;
-import com.fiba.shoppingservice.dto.cart.SaveProductToCartDto;
 import com.fiba.shoppingservice.dto.cartproduct.CartProductDto;
 import com.fiba.shoppingservice.dto.inventory.ProductDto;
 import com.fiba.shoppingservice.entity.Cart;
@@ -16,8 +15,6 @@ import com.fiba.shoppingservice.repository.CartRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,17 +34,10 @@ public class CartEntityService {
         this.cartProductEntityService = cartProductEntityService;
     }
 
-    public CartDto saveCart(CartDto cartDto) {
-        if (existByName(cartDto.getCustomerName())) {
+    public CartDto saveCart(Cart cart) {
+        if (existByName(cart.getCustomerName())) {
             throw new CustomerAlreadyExistException(ErrorMessage.CUSTOMER_ALREADY_EXIST);
         }
-
-        Cart cart = CartMapper.INSTANCE.convertToCart(cartDto);
-        // initialize savedCartDto with starter values
-        // totalAmount - cartProducts - isPaid
-        cart.setPaid(false);
-        cart.setTotalAmount(BigDecimal.ZERO);
-        cart.setCartProducts(new ArrayList<>());
 
         Cart savedCart = cartRepository.save(cart);
 
@@ -71,25 +61,7 @@ public class CartEntityService {
         return cart.get();
     }
 
-    public CartDto addProductToCart(SaveProductToCartDto saveProductToCartDto) {
-        Cart cart = getCartById(saveProductToCartDto.getCartId());
-
-        if (cart.isPaid()) {
-            cart.setPaid(false);
-        }
-
-        Long productId = saveProductToCartDto.getProductId();
-
-        int quantity = saveProductToCartDto.getSalesQuantity();
-
-        ProductDto productDto = getProductById(productId);
-
-        CartProduct cartProduct = new CartProduct();
-        cartProduct.setCart(cart);
-        cartProduct.setProductId(productDto.getProductId());
-        cartProduct.setSalesPrice(productDto.getSalesPrice());
-        cartProduct.setSalesQuantity(quantity);
-        cartProduct.setLineAmount(productDto.getSalesPrice().multiply(BigDecimal.valueOf(quantity)));
+    public CartDto addProductToCart(Cart cart, CartProduct cartProduct) {
 
         CartProduct savedCartProduct = cartProductEntityService.saveCartProduct(cartProduct);
 
@@ -105,16 +77,7 @@ public class CartEntityService {
 
     }
 
-    public void removeProductFromCart(long cartId, long productId) {
-        Cart cart = getCartById(cartId);
-
-        ProductDto productDto = getProductById(productId);
-
-        CartProduct cartProduct = cartProductEntityService.getCartProductByCartIdAndProductId(cartId, productId);
-
-        cart.getCartProducts().remove(cartProduct);
-
-        cart.setTotalAmount(cart.getTotalAmount().subtract(cartProduct.getLineAmount()));
+    public void removeProductFromCart(Cart cart, CartProduct cartProduct) {
 
         cartRepository.save(cart);
 
@@ -122,16 +85,7 @@ public class CartEntityService {
 
     }
 
-    public CartDto removeAllCartProductsAndCheckoutCart(long cartId) {
-        Cart cart = getCartById(cartId);
-
-        List<CartProduct> cartProducts = cart.getCartProducts();
-
-        cart.setCartProducts(new ArrayList<>());
-
-        cart.setTotalAmount(BigDecimal.ZERO);
-
-        cart.setPaid(true);
+    public CartDto removeAllCartProductsAndCheckoutCart(Cart cart, List<CartProduct> cartProducts) {
 
         Cart savedCart = cartRepository.save(cart);
 
@@ -163,6 +117,14 @@ public class CartEntityService {
         }
     }
 
+    public void deleteCartById(long id) {
+        if (!existById(id)) {
+            throw new CartNotFoundException(ErrorMessage.CART_NOT_FOUND);
+        }
+
+        cartRepository.deleteById(id);
+    }
+
     public boolean existById(long id) {
         return cartRepository.existsById(id);
     }
@@ -172,11 +134,4 @@ public class CartEntityService {
         return cart.isPresent();
     }
 
-    public void deleteCartById(long id) {
-        if (!existById(id)) {
-            throw new CartNotFoundException(ErrorMessage.CART_NOT_FOUND);
-        }
-
-        cartRepository.deleteById(id);
-    }
 }

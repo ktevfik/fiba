@@ -15,8 +15,7 @@ import java.util.Optional;
 @Repository
 public interface CartProductRepository extends JpaRepository<CartProduct, Long> {
 
-
-    @Query("SELECT cp FROM CartProduct cp WHERE cp.cart.cartId = :cartId AND cp.productId = :productId")
-    Optional<CartProduct> findCartProductByCartIdAndProductId(@Param("cartId") long cartId, @Param("productId") long productId);
+    @Query("SELECT cp FROM CartProduct cp WHERE cp.cart.cartId = :cartId AND cp.cartProductId = :cartProductId")
+    Optional<CartProduct> findCartProductByCartIdAndCartProductId(@Param("cartId") long cartId, @Param("cartProductId") long cartProductId);
 
 }
