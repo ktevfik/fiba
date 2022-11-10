@@ -1,4 +1,4 @@
-package com.fiba.shoppingservice.dto.cart;
+package com.fiba.ecommerce.models.shopping.cartproduct;
 
 /**
  * @author Tevfik Kadan

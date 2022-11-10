@@ -1,4 +1,4 @@
-package com.fiba.ecommerce.models.dto.category;
+package com.fiba.ecommerce.models.inventory.category;
 
 /**
  * @author Tevfik Kadan

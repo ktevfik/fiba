@@ -1,4 +1,4 @@
-package com.fiba.shoppingservice.dto.cartproduct;
+package com.fiba.ecommerce.models.shopping.cart;
 
 import java.math.BigDecimal;
 

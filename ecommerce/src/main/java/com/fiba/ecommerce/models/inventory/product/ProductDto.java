@@ -1,7 +1,7 @@
-package com.fiba.ecommerce.models.dto.product;
+package com.fiba.ecommerce.models.inventory.product;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fiba.inventoryservice.dto.category.CategoryDto;
+import com.fiba.ecommerce.models.inventory.category.CategoryDto;
 
 import java.math.BigDecimal;
 
