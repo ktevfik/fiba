@@ -1,6 +1,6 @@
 # Shopping Service
 
-If you open application. You can test endpoints via Swagger UI.
+If you open application. You can test endpoints via Swagger UI. Also don't forget to look test folder.
 
 - http://localhost:8082/v3/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config#/
 
