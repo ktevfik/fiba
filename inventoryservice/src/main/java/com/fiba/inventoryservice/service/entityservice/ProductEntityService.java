@@ -9,6 +9,8 @@ import com.fiba.inventoryservice.exception.exceptions.CategoryNotFoundException;
 import com.fiba.inventoryservice.exception.exceptions.ProductAlreadyExistException;
 import com.fiba.inventoryservice.exception.exceptions.ProductNotFoundException;
 import com.fiba.inventoryservice.repository.ProductRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +22,8 @@ import java.util.Optional;
  */
 @Service
 public class ProductEntityService {
+
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     private final ProductRepository productRepository;
 
@@ -35,11 +39,15 @@ public class ProductEntityService {
     }
 
     public List<Product> findProductsByCategoryId(Long id) {
-        try {
-            return productRepository.findProductsByCategoryId(id);
-        } catch (Exception e) {
+        log.info("Get By CategoryId process started for CategoryId: {}", id);
+
+        if (!categoryEntityService.existById(id)) {
+            log.error(ErrorMessage.CATEGORY_NOT_FOUND_MESSAGE.getMessage());
             throw new CategoryNotFoundException(ErrorMessage.CATEGORY_NOT_FOUND);
         }
+
+        log.info("Get By CategoryId process finished for CategoryId: {}", id);
+        return productRepository.findProductsByCategoryId(id);
     }
 
     public Product getByIdWithControl(Long id) {
@@ -48,7 +56,9 @@ public class ProductEntityService {
         Product product;
         try {
             product = productOptional.get();
+            log.info("Product found for ProductId: {}", id);
         } catch (Exception e) {
+            log.error(ErrorMessage.PRODUCT_NOT_FOUND_MESSAGE.getMessage());
             throw new ProductNotFoundException(ErrorMessage.PRODUCT_NOT_FOUND);
         }
         return product;
@@ -60,12 +70,14 @@ public class ProductEntityService {
         boolean categoryExist = categoryEntityService.isCategoryExist(categoryDto.getCategoryId(), categoryDto.getCategoryName());
 
         if (!categoryExist) {
+            log.error(ErrorMessage.CATEGORY_NOT_FOUND_MESSAGE.getMessage());
             throw new CategoryNotFoundException(ErrorMessage.CATEGORY_NOT_FOUND);
         }
 
         Optional<Product> productOptional = productRepository.findProductByProductNameAndCategoryId(productDto.getProductName(), categoryDto.getCategoryId());
 
         if (productOptional.isPresent()) {
+            log.error(ErrorMessage.PRODUCT_ALREADY_EXIST_MESSAGE.getMessage());
             throw new ProductAlreadyExistException(ErrorMessage.PRODUCT_ALREADY_EXIST);
         }
 

@@ -1,6 +1,7 @@
 package com.fiba.inventoryservice.exception;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * @author Tevfik Kadan
@@ -8,21 +9,23 @@ import java.util.Date;
  */
 public class ExceptionResponse {
 
-    private Date date;
+    private String date;
     private String message;
     private String details;
 
-    public ExceptionResponse(Date date, String message, String details) {
-        this.date = date;
+    public ExceptionResponse(String message, String details) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        this.date = now.format(formatter);
         this.message = message;
         this.details = details;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

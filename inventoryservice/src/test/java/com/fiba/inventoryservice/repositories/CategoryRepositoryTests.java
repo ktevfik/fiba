@@ -28,14 +28,21 @@ import static org.assertj.core.api.BDDAssertions.then;
 @AutoConfigureTestEntityManager
 public class CategoryRepositoryTests {
 
+    @Container
+    public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres");
     @Autowired
     private TestEntityManager testEntityManager;
-
     @Autowired
     private CategoryRepository categoryRepository;
 
-    @Container
-    public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres");
+    @DynamicPropertySource
+    public static void properties(DynamicPropertyRegistry registry) {
+        registry.add("spring.jpa.hibernate.ddl-auto", () -> "create");
+        registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
+        registry.add("spring.datasource.username", postgreSQLContainer::getUsername);
+        registry.add("spring.datasource.password", postgreSQLContainer::getPassword);
+        registry.add("spring.datasource.driver-class-name", postgreSQLContainer::getDriverClassName);
+    }
 
     @Test
     public void it_should_add_category() {
@@ -136,14 +143,5 @@ public class CategoryRepositoryTests {
 
         // then
         then(this.categoryRepository.findById((Long) categoryId1).orElse(null)).isNull();
-    }
-
-    @DynamicPropertySource
-    public static void properties(DynamicPropertyRegistry registry){
-        registry.add("spring.jpa.hibernate.ddl-auto", () -> "create");
-        registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
-        registry.add("spring.datasource.username", postgreSQLContainer::getUsername);
-        registry.add("spring.datasource.password", postgreSQLContainer::getPassword);
-        registry.add("spring.datasource.driver-class-name", postgreSQLContainer::getDriverClassName);
     }
 }

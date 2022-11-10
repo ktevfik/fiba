@@ -28,15 +28,21 @@ import static org.assertj.core.api.BDDAssertions.then;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class ProductRepositoryTests {
 
+    @Container
+    public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres");
     @Autowired
     private TestEntityManager testEntityManager;
-
     @Autowired
     private ProductRepository productRepository;
 
-    @Container
-    public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres");
-
+    @DynamicPropertySource
+    public static void properties(DynamicPropertyRegistry registry) {
+        registry.add("spring.jpa.hibernate.ddl-auto", () -> "create-drop");
+        registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
+        registry.add("spring.datasource.username", postgreSQLContainer::getUsername);
+        registry.add("spring.datasource.password", postgreSQLContainer::getPassword);
+        registry.add("spring.datasource.driver-class-name", postgreSQLContainer::getDriverClassName);
+    }
 
     @Test
     public void it_should_add_product() {
@@ -146,7 +152,7 @@ public class ProductRepositoryTests {
     }
 
     @Test
-    public void it_should_find_products(){
+    public void it_should_find_products() {
 
         //given
         Product product1 = new Product();
@@ -187,14 +193,5 @@ public class ProductRepositoryTests {
         // then
         Product product1 = this.productRepository.findById((Long) productId1).orElse(null);
         then(product1).isNull();
-    }
-
-    @DynamicPropertySource
-    public static void properties(DynamicPropertyRegistry registry){
-        registry.add("spring.jpa.hibernate.ddl-auto", () -> "create-drop");
-        registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
-        registry.add("spring.datasource.username", postgreSQLContainer::getUsername);
-        registry.add("spring.datasource.password", postgreSQLContainer::getPassword);
-        registry.add("spring.datasource.driver-class-name", postgreSQLContainer::getDriverClassName);
     }
 }
